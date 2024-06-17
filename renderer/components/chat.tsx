@@ -1,5 +1,6 @@
 import React from "react";
 import { useMutationRunQuery } from "../hooks/query";
+import SideChat from "./side-chat";
 
 interface MessageProps {
   text: string;
@@ -53,6 +54,8 @@ const UserMessage = (props: MessageProps) => {
 const Chat = () => {
   const runQuery = useMutationRunQuery();
 
+  const [updateSideChat, setUpdateSideChat] = React.useState("false");
+
   const [inputValue, setInputValue] = React.useState(
     "Generate a payment link for 5 '1 Hour of development'"
   );
@@ -61,66 +64,86 @@ const Chat = () => {
     { text: "Hello, how can I help you today ?", type: "bot" },
   ]);
 
-  const handleSubmitMessage = () => {
-    if (inputValue) {
-      setMessages([...messages, { text: inputValue, type: "user" }]);
+  const handleSubmitMessage = (message: string) => {
+    if (!message) return;
 
-      runQuery.mutate(
-        { query: inputValue },
-        {
-          onSuccess: (data) => {
-            const text =
-              data?.result ||
-              "Unexpected error occurred. Please try again later.";
+    setMessages([...messages, { text: message, type: "user" }]);
 
-            setMessages([...messages, { text, type: "bot" }]);
-          },
-        }
-      );
+    try {
+      const lastMessagesStr = localStorage.getItem("lastMessages") || "[]";
+      const lastMessagesJson: string[] = JSON.parse(lastMessagesStr);
+      lastMessagesJson.push(message);
+      localStorage.setItem("lastMessages", JSON.stringify(lastMessagesJson));
+      handleUpdateSideChat();
+    } catch (error) {}
 
+    // runQuery.mutate(
+    //   { query: message },
+    //   {
+    //     onSuccess: (data) => {
+    //       const text =
+    //         data?.result ||
+    //         "Unexpected error occurred. Please try again later.";
+
+    //       setMessages([...messages, { text, type: "bot" }]);
+    //     },
+    //   }
+    // );
+
+    if (message === inputValue) {
       setInputValue("");
     }
   };
 
+  const handleUpdateSideChat = () => {
+    setUpdateSideChat((prev) => (prev === "true" ? "false" : "true"));
+  };
+
   return (
-    <div className="flex flex-col flex-1 chat-area">
-      <div className="flex-3">
-        <h2 className="py-1 mb-8 text-xl border-b-2 border-gray-200">
-          Chatting with <b>Agile Loop Bot</b>
-        </h2>
-      </div>
-      <div className="flex-1 overflow-auto messages">
-        {messages.map((message, index) => {
-          if (message.type === "bot") {
-            return <BotMessage key={index} text={message.text} />;
-          } else {
-            return <UserMessage key={index} text={message.text} />;
-          }
-        })}
-        {runQuery.isPending && <BotMessage text="Loading..." />}
-      </div>
-      <div className="pt-4 pb-10 flex-2">
-        <div className="flex bg-white rounded-lg shadow write">
-          <div className="flex-1">
-            <textarea
-              name="message"
-              className="block w-full px-4 py-4 bg-transparent outline-none"
-              rows={1}
-              placeholder="Type a message..."
-              autoFocus
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                  handleSubmitMessage();
-                }
-              }}
-            ></textarea>
+    <>
+      <SideChat
+        key={updateSideChat}
+        handleSubmitMessage={handleSubmitMessage}
+      />
+      <div className="flex flex-col flex-1 chat-area">
+        <div className="flex-3">
+          <h2 className="py-1 mb-8 text-xl border-b-2 border-gray-200">
+            Chatting with <b>Agile Loop Bot</b>
+          </h2>
+        </div>
+        <div className="flex-1 overflow-auto messages">
+          {messages.map((message, index) => {
+            if (message.type === "bot") {
+              return <BotMessage key={index} text={message.text} />;
+            } else {
+              return <UserMessage key={index} text={message.text} />;
+            }
+          })}
+          {runQuery.isPending && <BotMessage text="Loading..." />}
+        </div>
+        <div className="pt-4 pb-10 flex-2">
+          <div className="flex bg-white rounded-lg shadow write">
+            <div className="flex-1">
+              <textarea
+                name="message"
+                className="block w-full px-4 py-4 bg-transparent outline-none"
+                rows={1}
+                placeholder="Type a message..."
+                autoFocus
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleSubmitMessage(inputValue);
+                  }
+                }}
+              ></textarea>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

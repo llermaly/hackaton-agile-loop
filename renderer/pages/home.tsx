@@ -25,7 +25,6 @@ const Home: NextPage = () => {
                 </div>
 
                 <div className="flex flex-1 h-full">
-                  <SideChat />
                   <Chat />
                 </div>
               </div>
