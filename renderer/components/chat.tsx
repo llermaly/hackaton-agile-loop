@@ -67,7 +67,7 @@ const Chat = () => {
   const handleSubmitMessage = (message: string) => {
     if (!message) return;
 
-    setMessages([...messages, { text: message, type: "user" }]);
+    setMessages((prev) => [...prev, { text: message, type: "user" }]);
 
     try {
       const lastMessagesStr = localStorage.getItem("lastMessages") || "[]";
@@ -77,18 +77,18 @@ const Chat = () => {
       handleUpdateSideChat();
     } catch (error) {}
 
-    // runQuery.mutate(
-    //   { query: message },
-    //   {
-    //     onSuccess: (data) => {
-    //       const text =
-    //         data?.result ||
-    //         "Unexpected error occurred. Please try again later.";
+    runQuery.mutate(
+      { query: message },
+      {
+        onSuccess: (data) => {
+          const text =
+            data?.result ||
+            "Unexpected error occurred. Please try again later.";
 
-    //       setMessages([...messages, { text, type: "bot" }]);
-    //     },
-    //   }
-    // );
+          setMessages((prev) => [...prev, { text, type: "bot" }]);
+        },
+      }
+    );
 
     if (message === inputValue) {
       setInputValue("");
