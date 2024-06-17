@@ -9,9 +9,9 @@ const Header = () => {
             <svg
               className="w-4 h-4"
               fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               stroke="currentColor"
               viewBox="0 0 24 24"
             >
@@ -24,9 +24,9 @@ const Header = () => {
             <svg
               className="w-4 h-4"
               fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               stroke="currentColor"
               viewBox="0 0 24 24"
             >
@@ -35,24 +35,26 @@ const Header = () => {
           </span>
         </span>
       </div>
-      <div className="flex-1 text-right">
+      <div className="items-center flex-1 text-right">
         <span className="inline-block text-gray-700">
-          Status:{" "}
-          <span className="inline-block w-4 h-4 align-text-bottom bg-green-400 border-2 border-white rounded-full"></span>{" "}
-          <b>Online</b>
-          <span className="inline-block align-text-bottom">
-            <svg
-              fill="none"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-              className="w-4 h-4"
-            >
-              <path d="M19 9l-7 7-7-7"></path>
-            </svg>
-          </span>
+          <div className="flex items-center gap-2">
+            <span>Status:</span>
+            <span className="inline-block w-4 h-4 align-text-bottom bg-green-400 rounded-full"></span>{" "}
+            <b>Online</b>
+            <span className="inline-block align-text-bottom">
+              <svg
+                fill="none"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                className="w-4 h-4"
+              >
+                <path d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </span>
+          </div>
         </span>
 
         <span className="inline-block ml-8 text-gray-700 align-bottom hover:text-gray-900">
@@ -60,11 +62,11 @@ const Header = () => {
             <svg
               fill="none"
               stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               viewBox="0 0 24 24"
-              className="w-4 h-4"
+              className="w-5 h-5"
             >
               <path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path>
             </svg>
