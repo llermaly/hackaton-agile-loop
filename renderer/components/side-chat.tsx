@@ -24,7 +24,7 @@ const SideChat = (props: SideChatProps) => {
         />
       </div>
       <div className="flex-1 h-full px-2 overflow-auto">
-        {lastMessages?.map((message, index) => (
+        {lastMessages?.reverse()?.map((message, index) => (
           <div
             key={index}
             onClick={() => props.handleSubmitMessage(message)}

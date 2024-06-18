@@ -2,6 +2,11 @@ import React from "react";
 import { useMutationRunQuery } from "../hooks/query";
 import SideChat from "./side-chat";
 
+const exampleMessages = [
+  "Get the total duration of my tasks in monday for the board agileloop",
+  "Generate a stripe payment link for 10 '1 Hour of development'",
+];
+
 interface MessageProps {
   text: string;
 }
@@ -25,7 +30,7 @@ const BotMessage = (props: MessageProps) => {
         </div>
       </div>
       <div className="flex-1 px-2">
-        <div className="inline-block p-2 px-6 text-gray-700 bg-gray-300 rounded-full">
+        <div className="inline-block p-2 px-6 text-gray-700 bg-gray-300 rounded-md">
           <span>{props.text}</span>
         </div>
         <div className="pl-4">
@@ -40,7 +45,7 @@ const UserMessage = (props: MessageProps) => {
   return (
     <div className="flex mb-4 text-right message me">
       <div className="flex-1 px-2">
-        <div className="inline-block p-2 px-6 text-white bg-blue-600 rounded-full">
+        <div className="inline-block p-2 px-6 text-white bg-blue-600 rounded-md">
           <span>{props.text}</span>
         </div>
         <div className="pr-4">
@@ -56,9 +61,7 @@ const Chat = () => {
 
   const [updateSideChat, setUpdateSideChat] = React.useState("false");
 
-  const [inputValue, setInputValue] = React.useState(
-    "Generate a payment link for 5 '1 Hour of development'"
-  );
+  const [inputValue, setInputValue] = React.useState("");
 
   const [messages, setMessages] = React.useState<Message[]>([
     { text: "Hello, how can I help you today ?", type: "bot" },
@@ -81,9 +84,14 @@ const Chat = () => {
       { query: message },
       {
         onSuccess: (data) => {
-          const text =
+          let text: string =
             data?.result ||
             "Unexpected error occurred. Please try again later.";
+
+          if (text?.toLowerCase()?.includes("final answer:")) {
+            text = text.toLowerCase()?.split("final answer:")?.[1]?.trim();
+            text = text?.[0]?.toUpperCase() + text?.slice(1);
+          }
 
           setMessages((prev) => [...prev, { text, type: "bot" }]);
         },
@@ -111,7 +119,7 @@ const Chat = () => {
             Chatting with <b>Agile Loop Bot</b>
           </h2>
         </div>
-        <div className="flex-1 overflow-auto messages">
+        <div className="flex-1 overflow-auto messages max-h-[400px]">
           {messages.map((message, index) => {
             if (message.type === "bot") {
               return <BotMessage key={index} text={message.text} />;
@@ -120,6 +128,18 @@ const Chat = () => {
             }
           })}
           {runQuery.isPending && <BotMessage text="Loading..." />}
+        </div>
+        <div className="flex flex-col gap-2">
+          {messages.length === 1 &&
+            exampleMessages.map((message, index) => (
+              <div
+                onClick={() => handleSubmitMessage(message)}
+                className="p-2 text-gray-400 transition-all bg-white rounded-md shadow-md cursor-pointer entry hover:scale-105"
+                key={index}
+              >
+                {message}
+              </div>
+            ))}
         </div>
         <div className="pt-4 pb-10 flex-2">
           <div className="flex bg-white rounded-lg shadow write">
