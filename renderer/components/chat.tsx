@@ -4,7 +4,8 @@ import SideChat from "./side-chat";
 
 const exampleMessages = [
   "Get the total duration of my tasks in monday for the board agileloop",
-  "Generate a stripe payment link for 10 '1 Hour of development'",
+  "Generate a stripe payment link for 3 hour of development",
+  "Send an email to maxxii.2420@gmail with subject 'Payment Link' and content 'Here is the payment link: https://stripe.com/link'",
 ];
 
 interface MessageProps {
@@ -87,10 +88,15 @@ const Chat = () => {
           let text: string =
             data?.result ||
             "Unexpected error occurred. Please try again later.";
+          const keyword = "final answer:";
 
-          if (text?.toLowerCase()?.includes("final answer:")) {
-            text = text.toLowerCase()?.split("final answer:")?.[1]?.trim();
-            text = text?.[0]?.toUpperCase() + text?.slice(1);
+          const keywordIndex = text
+            ?.toLowerCase()
+            ?.indexOf(keyword.toLowerCase());
+
+          if (keywordIndex !== -1) {
+            text = text.slice(keywordIndex + keyword.length)?.trim();
+            text = text?.charAt(0).toUpperCase() + text?.slice(1);
           }
 
           setMessages((prev) => [...prev, { text, type: "bot" }]);
