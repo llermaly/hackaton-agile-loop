@@ -2,12 +2,6 @@ import React from "react";
 import { useMutationRunQuery } from "../hooks/query";
 import SideChat from "./side-chat";
 
-const exampleMessages = [
-  "Get the total duration of my tasks in monday for the board agileloop",
-  "Generate a stripe payment link for 3 hour of development",
-  "Send an email to maxxii.2420@gmail with subject 'Payment Link' and content 'Here is the payment link: https://stripe.com/link'",
-];
-
 interface MessageProps {
   text: string;
 }
@@ -19,24 +13,17 @@ interface Message {
 
 const BotMessage = (props: MessageProps) => {
   return (
-    <div className="flex mb-4 message">
-      <div className="flex-2">
-        <div className="relative w-12 h-12">
-          <img
-            className="w-12 h-12 mx-auto rounded-full"
-            src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
-            alt="chat-user"
-          />
-          <span className="absolute bottom-0 right-0 w-4 h-4 bg-gray-400 border-2 border-white rounded-full"></span>
-        </div>
+    <div className="flex flex-col mb-4 message">
+      <div className="flex items-center justify-start">
+        <img
+          className="w-8 h-8 rounded-full"
+          src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+          alt="chat-user"
+        />
+        <span className="px-2 text-sm text-gray-400">Chatbot</span>
       </div>
-      <div className="flex-1 px-2">
-        <div className="inline-block p-2 px-6 text-gray-700 bg-gray-300 rounded-md">
-          <span>{props.text}</span>
-        </div>
-        <div className="pl-4">
-          <small className="text-gray-500">15 April</small>
-        </div>
+      <div className="flex px-2 py-1 mt-2">
+        <span className="text-sm text-gray1">{props.text}</span>
       </div>
     </div>
   );
@@ -44,14 +31,17 @@ const BotMessage = (props: MessageProps) => {
 
 const UserMessage = (props: MessageProps) => {
   return (
-    <div className="flex mb-4 text-right message me">
-      <div className="flex-1 px-2">
-        <div className="inline-block p-2 px-6 text-white bg-blue-600 rounded-md">
-          <span>{props.text}</span>
-        </div>
-        <div className="pr-4">
-          <small className="text-gray-500">15 April</small>
-        </div>
+    <div className="flex flex-col items-end mb-4 message">
+      <div className="flex items-center justify-end">
+        <span className="px-2 text-sm text-blue-400">User</span>
+        <img
+          className="w-8 h-8 rounded-full"
+          src="https://cdn-icons-png.flaticon.com/512/149/149071.png"
+          alt="chat-user"
+        />
+      </div>
+      <div className="flex px-2 py-1 mt-2 bg-blue-200 rounded-md rounded-tr-none">
+        <span className="text-sm text-blue-600">{props.text}</span>
       </div>
     </div>
   );
@@ -119,13 +109,24 @@ const Chat = () => {
         key={updateSideChat}
         handleSubmitMessage={handleSubmitMessage}
       />
-      <div className="flex flex-col flex-1 chat-area">
-        <div className="flex-3">
-          <h2 className="py-1 mb-8 text-xl border-b-2 border-gray-200">
-            Chatting with <b>Agile Loop Bot</b>
-          </h2>
+      <div className="flex flex-col flex-1 w-full pl-4">
+        <div className="flex mb-6 justify-between items-center border-b-2 border-gray-100 h-[58px]">
+          <h2 className="py-2 text-xl font-light text-gray-400">Chat</h2>
+          <div>
+            <button
+              onClick={() => {
+                setMessages([
+                  { text: "Hello, how can I help you today ?", type: "bot" },
+                ]);
+              }}
+              className={`px-3 py-1.5 text-sm  bg-gray-200 text-gray-700 rounded-md active:opacity-80`}
+            >
+              Reset chat
+            </button>
+          </div>
         </div>
-        <div className="flex-1 overflow-auto messages max-h-[400px]">
+
+        <div className="flex-1 overflow-auto messages h-full max-h-[300px]">
           {messages.map((message, index) => {
             if (message.type === "bot") {
               return <BotMessage key={index} text={message.text} />;
@@ -135,24 +136,13 @@ const Chat = () => {
           })}
           {runQuery.isPending && <BotMessage text="Loading..." />}
         </div>
-        <div className="flex flex-col gap-2">
-          {messages.length === 1 &&
-            exampleMessages.map((message, index) => (
-              <div
-                onClick={() => handleSubmitMessage(message)}
-                className="p-2 text-gray-400 transition-all bg-white rounded-md shadow-md cursor-pointer entry hover:scale-105"
-                key={index}
-              >
-                {message}
-              </div>
-            ))}
-        </div>
-        <div className="pt-4 pb-10 flex-2">
-          <div className="flex bg-white rounded-lg shadow write">
+
+        <div className="pt-4 flex-2">
+          <div className="flex bg-white rounded-md write">
             <div className="flex-1">
               <textarea
                 name="message"
-                className="block w-full px-4 py-4 bg-transparent outline-none"
+                className="block w-full px-4 py-4 bg-gray-100 rounded-md outline-none"
                 rows={1}
                 placeholder="Type a message..."
                 autoFocus

@@ -33,6 +33,8 @@ module.exports = {
         darkest: "hsl(240, 100%, 13%)",
         secondary: "#76d4e4",
       },
+      gray1: "#555555",
+      gray2: "#727272",
     },
     fontFamily: {
       sans: ["Helvetica Now Display", "Helvetica", "Arial", "sans-serif"],

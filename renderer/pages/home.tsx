@@ -4,7 +4,7 @@ import Sidemenu from "../components/side-menu";
 import Header from "../components/header";
 import SideChat from "../components/side-chat";
 import Chat from "../components/chat";
-
+import bg from "../../resources/bg.png";
 const Home: NextPage = () => {
   return (
     <>
@@ -13,25 +13,30 @@ const Home: NextPage = () => {
         <meta name="description" content="Agile Loop Hackathon" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div className="w-full h-screen">
-        <div className="flex h-full">
-          <Sidemenu />
-          <div className="flex-1 w-full h-full bg-gray-100">
-            <div className="container flex flex-col w-11/12 h-full m-auto main-body">
-              <Header />
-              <div className="flex flex-col flex-1 main">
-                <div className="hidden lg:block heading flex-2">
-                  <h1 className="mb-4 text-3xl text-gray-700">Chat</h1>
-                </div>
+      <main className="relative">
+        <img
+          src="images/bg.png"
+          alt="bg"
+          className="absolute w-screen h-screen"
+        />
+        <div className="absolute w-full p-4 max-w-screen ">
+          <div className="w-full px-4 pb-6 mx-auto bg-white rounded-md bg-opacity-40">
+            <Header />
 
-                <div className="flex flex-1 h-full">
-                  <Chat />
+            <div className="flex h-[500px]">
+              <div className="flex-1 w-full h-full bg-white rounded-md shadow">
+                <div className="container flex flex-col w-full h-full p-4 m-auto main-body">
+                  <div className="flex flex-col flex-1 main">
+                    <div className="flex flex-1 h-full">
+                      <Chat />
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </>
   );
 };
