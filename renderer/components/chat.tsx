@@ -23,6 +23,26 @@ interface Message {
   type: "bot" | "user";
 }
 
+const BotLoadingMessage = () => {
+  return (
+    <div className="flex flex-col mb-4 message">
+      <div className="flex items-center justify-start">
+        <div className="h-[32px] px-[2px] pt-1.5 bg-gray-800 rounded-full">
+          <img
+            className="p-1 bg-gray-800 rounded-full"
+            src="/images/bot.svg"
+            alt="chat-bot"
+          />
+        </div>
+        <span className="px-2 text-sm text-gray-400">Chatbot</span>
+      </div>
+      <div className="flex flex-col py-1 pl-1 mt-2">
+        <span className="loader"></span>
+      </div>
+    </div>
+  );
+};
+
 const BotMessage = (props: MessageProps) => {
   return (
     <div className="flex flex-col mb-4 message">
@@ -218,7 +238,7 @@ const Chat = () => {
     <>
       <SideChat
         key={updateSideChat}
-        handleSubmitMessage={handleSubmitMessage}
+        handleSubmitMessage={(m) => setInputValue(m)}
       />
       <div className="flex flex-col flex-1 w-full pl-4">
         <div className="flex mb-6 justify-between items-center border-b-2 border-gray-100 h-[58px]">
@@ -255,10 +275,8 @@ const Chat = () => {
               return <UserMessage key={index} text={message.text} />;
             }
           })}
-          {runQuery.isPending && <BotMessage text="Loading..." disableCites />}
-          {runQueryWithScenario.isPending && (
-            <BotMessage text="Loading..." disableCites />
-          )}
+          {!runQuery.isPending && <BotLoadingMessage />}
+          {runQueryWithScenario.isPending && <BotLoadingMessage />}
         </div>
 
         <div className="pt-2 flex-2">
