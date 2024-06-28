@@ -33,7 +33,7 @@ const Header = () => {
   };
 
   return (
-    <div className="flex flex-row px-1 py-3 flex-2">
+    <div className="flex flex-row px-1 py-4 flex-2">
       <h1 className="text-lg font-semibold text-gray-800">Agile Loop</h1>
       <div className="items-center flex-1 text-right">
         <span className="inline-block font-light text-gray2">

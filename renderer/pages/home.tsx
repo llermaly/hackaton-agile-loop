@@ -23,9 +23,9 @@ const Home: NextPage = () => {
           <div className="w-full px-4 pb-6 mx-auto bg-white rounded-md bg-opacity-40">
             <Header />
 
-            <div className="flex h-[500px]">
+            <div className="flex h-[450px]">
               <div className="flex-1 w-full h-full bg-white rounded-md shadow">
-                <div className="container flex flex-col w-full h-full p-4 m-auto main-body">
+                <div className="flex flex-col w-full h-full p-4 m-auto main-body">
                   <div className="flex flex-col flex-1 main">
                     <div className="flex flex-1 h-full">
                       <Chat />

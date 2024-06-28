@@ -10,20 +10,32 @@ const mockLastMessages = [
 
 const exampleActions = [
   {
-    name: "Monday tasks duration",
+    name: "Publish on slack",
+    text: "Send a message in slack to the general channel saying 'hello everyone'",
+    img: "/images/slack.svg",
+    className: "gradient-yellow",
+  },
+  {
+    name: "Send email",
+    text: "Send an email to something@gmail with subject 'Payment Link' and content 'Here is the payment link: https://stripe.com/link'",
+    img: "/images/email.svg",
+    className: "gradient-blue",
+  },
+  {
+    name: "Tasks durations",
     text: "Get the total duration of my tasks in monday for the board agileloop",
+    img: "/images/monday.svg",
+    className: "gradient-green",
   },
   {
     name: "Stripe payment link",
     text: "Generate a stripe payment link for 3 hour of development",
-  },
-  {
-    name: "Send an email",
-    text: "Send an email to maxxii.2420@gmail with subject 'Payment Link' and content 'Here is the payment link: https://stripe.com/link'",
+    img: "/images/stripe.jpg",
+    className: "gradient-purple",
   },
 ];
 
-const ActionItem = ({ name, text, ...rest }) => {
+const HistoryItem = ({ name, text, ...rest }) => {
   return (
     <div
       className="flex mb-3 transition-transform duration-300 transform bg-gray-100 rounded-md cursor-pointer entry"
@@ -39,9 +51,27 @@ const ActionItem = ({ name, text, ...rest }) => {
   );
 };
 
+const ActionItem = ({ name, text, img, className = "", ...rest }) => {
+  return (
+    <div
+      className={`flex items-center mb-4 transition-transform duration-300 transform bg-gray-100 rounded-md cursor-pointer entry ${className}`}
+      {...rest}
+    >
+      <div className="p-3 pb-3.5 grid grid-cols-12 gap-4">
+        <div className="flex items-center justify-center col-span-2">
+          <img src={img} className="w-10 h-10 rounded-md" />
+        </div>
+        <div className="col-span-10">
+          <span className="text-sm font-semibold text-gray-600">{name}</span>
+          <p className="text-xs text-gray2">{text}</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const SideChat = (props: SideChatProps) => {
-  const [lastMessages, setLastMessages] =
-    React.useState<string[]>(mockLastMessages);
+  const [lastMessages, setLastMessages] = React.useState<string[]>([]);
 
   const [tab, setTab] = React.useState("quick");
 
@@ -53,7 +83,7 @@ const SideChat = (props: SideChatProps) => {
   }, []);
 
   return (
-    <div className="flex-col hidden pr-4 border-r-2 border-gray-100 sidebar lg:flex flex-2 max-w-[350px]">
+    <div className="flex-col hidden pr-4 border-r-2 border-gray-100 sidebar lg:flex flex-2 max-w-[450px] w-full">
       <div className="flex items-center justify-between gap-8 h-[40px]">
         <h1 className="text-xl font-light text-gray-400">Quick actions</h1>
         <div className="flex items-center gap-2 ">
@@ -79,11 +109,11 @@ const SideChat = (props: SideChatProps) => {
           </button>
         </div>
       </div>
-      <div className="flex-1 h-full pt-4 mt-4 overflow-auto border-t-2 border-gray-100">
+      <div className="flex-1 max-h-[360px] h-full pt-4 mt-4 overflow-auto border-t-2 border-gray-100 pr-2">
         {tab === "history" && (
           <>
             {lastMessages?.reverse()?.map((message, index) => (
-              <ActionItem
+              <HistoryItem
                 key={index}
                 name="Action"
                 text={message}
@@ -104,11 +134,10 @@ const SideChat = (props: SideChatProps) => {
         )}
         {tab === "quick" && (
           <>
-            {exampleActions?.reverse()?.map((ac, index) => (
+            {exampleActions?.map((ac, index) => (
               <ActionItem
                 key={index}
-                name={ac.name}
-                text={ac.text}
+                {...ac}
                 onClick={() => props.handleSubmitMessage(ac.text)}
               />
             ))}
