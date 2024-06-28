@@ -275,7 +275,7 @@ const Chat = () => {
               return <UserMessage key={index} text={message.text} />;
             }
           })}
-          {!runQuery.isPending && <BotLoadingMessage />}
+          {runQuery.isPending && <BotLoadingMessage />}
           {runQueryWithScenario.isPending && <BotLoadingMessage />}
         </div>
 
