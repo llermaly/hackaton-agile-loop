@@ -4,6 +4,7 @@ import {
   useMutationRunQueryWithScenario,
 } from "../hooks/query";
 import SideChat from "./side-chat";
+import Markdown from "react-markdown";
 
 const scenarioImg = {
   slack: "/images/slack.svg",
@@ -61,7 +62,9 @@ const BotMessage = (props: MessageProps) => {
         <span className="px-2 text-sm text-gray-400">Chatbot</span>
       </div>
       <div className="flex flex-col px-2 py-1 mt-2">
-        <span className="text-sm text-gray1">{props.text}</span>
+        <span className="text-sm text-gray1">
+          <Markdown>{props.text}</Markdown>
+        </span>
         {!props.disableCites && (
           <div className="flex items-center gap-4 pt-2">
             <img
