@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 
 interface SideChatProps {
   handleSubmitMessage: (message: string) => void;
+  tab: string;
+  setTab: (tab: string) => void;
 }
 
 const mockLastMessages = [
@@ -71,14 +73,14 @@ const ActionItem = ({ name, text, img, className = "", ...rest }) => {
 };
 
 const SideChat = (props: SideChatProps) => {
-  const [lastMessages, setLastMessages] = React.useState<string[]>([]);
+  const { tab, setTab } = props;
 
-  const [tab, setTab] = React.useState("quick");
+  const [lastMessages, setLastMessages] = React.useState<string[]>([]);
 
   useEffect(() => {
     const lastMessages = localStorage.getItem("lastMessages");
     if (lastMessages) {
-      setLastMessages(JSON.parse(lastMessages));
+      setLastMessages(JSON.parse(lastMessages)?.reverse());
     }
   }, []);
 
@@ -112,7 +114,7 @@ const SideChat = (props: SideChatProps) => {
       <div className="flex-1 max-h-[360px] h-full pt-4 mt-4 overflow-auto border-t-2 border-gray-100 pr-2">
         {tab === "history" && (
           <>
-            {lastMessages?.reverse()?.map((message, index) => (
+            {lastMessages?.map((message, index) => (
               <HistoryItem
                 key={index}
                 name="Action"

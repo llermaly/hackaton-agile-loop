@@ -12,6 +12,10 @@ const scenarioImg = {
   stripe: "/images/stripe.jpg",
 };
 
+const shortenMessage = (message: string) => {
+  return message.length > 70 ? message.slice(0, 70) + "..." : message;
+};
+
 interface MessageProps {
   text: string;
   handleClickCitedMessage?: (message: string, scenario: string) => void;
@@ -234,11 +238,15 @@ const Chat = () => {
     scrollRef.current?.scrollTo(0, height);
   }, [messages]);
 
+  const [tab, setTab] = React.useState("quick");
+
   return (
     <>
       <SideChat
         key={updateSideChat}
         handleSubmitMessage={(m) => setInputValue(m)}
+        tab={tab}
+        setTab={setTab}
       />
       <div className="flex flex-col flex-1 w-full pl-4">
         <div className="flex mb-6 justify-between items-center border-b-2 border-gray-100 h-[58px]">
@@ -284,7 +292,7 @@ const Chat = () => {
             <div className="flex-1 bg-gray-100  h-[72px] rounded-md">
               {citedMessage && (
                 <div className="flex items-center gap-2 pt-2 pl-4 text-sm text-gray-500 ">
-                  <div>{citedMessage}</div>
+                  <div>{shortenMessage(citedMessage)}</div>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     x="0px"
