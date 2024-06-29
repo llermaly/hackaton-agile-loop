@@ -39,12 +39,9 @@ const exampleActions = [
 
 const HistoryItem = ({ name, text, ...rest }) => {
   return (
-    <div
-      className="flex mb-3 transition-transform duration-300 transform bg-gray-100 rounded-md cursor-pointer entry"
-      {...rest}
-    >
+    <div className="mb-3 bg-gray-100 rounded-md cursor-pointer entry" {...rest}>
       <div className="p-3 pb-3.5">
-        <div>
+        <div className="break-words">
           <span className="text-sm font-semibold text-blue-600">{name}</span>
           <p className="text-sm text-gray2">{text}</p>
         </div>
@@ -122,6 +119,7 @@ const SideChat = (props: SideChatProps) => {
                 onClick={() => props.handleSubmitMessage(message)}
               />
             ))}
+
             <button
               onClick={() => {
                 localStorage.removeItem("lastMessages");
