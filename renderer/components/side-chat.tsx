@@ -55,14 +55,14 @@ const HistoryItem = ({ name, text, ...rest }) => {
 const ActionItem = ({ name, text, img, className = "", ...rest }) => {
   return (
     <div
-      className={`flex items-center mb-4 transition-transform duration-300 transform bg-gray-100 rounded-md cursor-pointer entry ${className}`}
+      className={`mb-4 w-full transform bg-gray-100 rounded-md cursor-pointer entry ${className}`}
       {...rest}
     >
       <div className="p-3 pb-3.5 grid grid-cols-12 gap-4">
         <div className="flex items-center justify-center col-span-2">
           <img src={img} className="w-10 h-10 rounded-md" />
         </div>
-        <div className="col-span-10">
+        <div className="col-span-10 break-words">
           <span className="text-sm font-semibold text-gray-600">{name}</span>
           <p className="text-xs text-gray2">{text}</p>
         </div>
